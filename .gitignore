@@ -2,3 +2,6 @@
 platformio.ini
 .pio
 .vscode
+boards
+partitions-16MB-custom.csv
+test

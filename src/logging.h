@@ -1,11 +1,16 @@
 #pragma once
-#include "stdio.h"
+#include <cstring>
+#include <stdarg.h>
+#include <stdio.h>
 
-enum LOG_LEVEL { LOG_LEVEL_INFO = 1, LOG_LEVEL_WARNING, LOG_LEVEL_ERROR, LOG_LEVEL_DEBUG, LOG_LEVEL_COUNT };
+#include "adapters/arduinoserial/arduino_serial_adapter.h"
+#include "adapters/log_adapter.h"
+
+#include "structs.h"
 
 #define LOG(log_level, verbose, ...)                                                                                   \
     do {                                                                                                               \
-        Logging::getInstance()->log(log_level, verbose, __FILE__, __func__, __LINE__, __VA_ARGS__);                    \
+        Logging::getInstance()->log(log_level, verbose, millis(), __FILE__, __func__, __LINE__, __VA_ARGS__);          \
     } while (0)
 
 #define LOGI(...) LOG(LOG_LEVEL_INFO, false, __VA_ARGS__);
@@ -15,21 +20,21 @@ enum LOG_LEVEL { LOG_LEVEL_INFO = 1, LOG_LEVEL_WARNING, LOG_LEVEL_ERROR, LOG_LEV
 
 #define LOGV(log_level, ...) LOG(log_level, true, __VA_ARGS__);
 
-struct LOG_MESSAGE {
-    LOG_LEVEL level;
-    bool verbose;
-    const char *origin;
-    const char *message;
-};
+// bool operator==(const LOG_MESSAGE &lhs, const LOG_MESSAGE &rhs);
 
 class Logging {
   public:
+    static void setAdapter(LogAdapter *adapter);
+    static void setVerbose(bool verbose);
     static Logging *getInstance();
-    LOG_MESSAGE log(LOG_LEVEL level, bool verbose, const char *file, const char *func, int line, const char *fmt, ...);
+    void log(LOG_LEVEL level, bool verbose, unsigned long timestamp, const char *file, const char *func, int line,
+             const char *fmt, ...);
 
   private:
     Logging() {};
     ~Logging() {};
+
+    LogAdapter *adapter_ = nullptr;
 
     Logging(const Logging &) = delete;
     Logging &operator=(const Logging &) = delete;
