@@ -19,6 +19,7 @@
 // Static polymorphic abstract base class for a FreeRTOS task using CRTP pattern. Concrete implementations
 // should implement a run() method.
 // Inspired by https://fjrg76.wordpress.com/2018/05/23/objectifying-task-creation-in-freertos-ii/
+namespace FreeRTOS {
 template <class T> class Task {
   public:
     Task(const char *name, uint32_t stackDepth, UBaseType_t priority, const BaseType_t coreId = tskNO_AFFINITY)
@@ -45,3 +46,4 @@ template <class T> class Task {
     TaskHandle_t taskHandle;
     const BaseType_t coreId;
 };
+} 
