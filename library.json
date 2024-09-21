@@ -1,0 +1,19 @@
+{
+  "name": "Logging",
+  "keywords": "log, LOG, Logging, LOGGING, ESP32, S3, ESP32S3",
+  "description": "Logging library for ESP32",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlhampuswall/logging.git"
+  },
+  "authors": [
+    {
+      "name": "Hampus Wall",
+      "email": "",
+      "maintainer": true
+    }
+  ],
+  "version": "0.1.0",
+  "frameworks": "arduino",
+  "platforms": ["espressif"]
+}
