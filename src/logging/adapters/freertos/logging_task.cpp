@@ -12,6 +12,7 @@ void LoggingTask::run() {
         if (xQueueReceive(log_queue, &log_msg, portMAX_DELAY)) {
             protocol_->log(log_msg);
         }
+        protocol_->read();
         delay(1);
     }
 }

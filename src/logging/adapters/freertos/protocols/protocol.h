@@ -7,6 +7,7 @@ class Protocol {
     Protocol() {};
     ~Protocol() {};
     virtual void log(LogMessage log_msg) = 0;
+    virtual void read() = 0;
 
     // bool isVerbose() { return verbose; }
     void setVerbose(bool verbose) { verbose_ = verbose; }

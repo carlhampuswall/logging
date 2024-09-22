@@ -2,14 +2,18 @@
 
 FreeRTOSAdapter::FreeRTOSAdapter(Protocol *protocol, const char *name, uint32_t stackDepth, UBaseType_t priority,
                                  const BaseType_t coreId)
-    : protocol_{protocol}, logging_task_{name, stackDepth, priority, coreId, protocol} {
+    : protocol_{protocol}, logging_task_{
+                               mutex_, protocol, name, stackDepth, priority, coreId,
+                           } {
     mutex_ = xSemaphoreCreateMutex();
 
     stream_.begin();
     logging_task_.begin();
 }
 
-void FreeRTOSAdapter::output(const char *message) { Serial.println(message); }
+void FreeRTOSAdapter::output(const char *message) {
+    // Serial.println(message);
+}
 
 void FreeRTOSAdapter::handleLog(LogMessage log_msg) { logging_task_.enqueue_log(log_msg); }
 

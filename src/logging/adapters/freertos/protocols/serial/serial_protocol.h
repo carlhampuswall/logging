@@ -15,6 +15,8 @@ class SerialProtocol : public Protocol {
     SerialProtocol(Stream &stream) : Protocol(), stream_(stream) {}
     virtual ~SerialProtocol() {}
 
+    void read() override { readSerial(); }
+
   protected:
     virtual void readSerial();
 
