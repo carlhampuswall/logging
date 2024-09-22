@@ -9,7 +9,7 @@ void LoggingTask::run() {
     delay(1000);
 
     while (1) {
-        if (xQueueReceive(log_queue, &log_msg, portMAX_DELAY)) {
+        if (xQueueReceive(log_queue, &log_msg, 0)) {
             protocol_->log(log_msg);
         }
         protocol_->read();
