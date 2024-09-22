@@ -13,7 +13,7 @@ class FreeRTOSAdapter : public LogAdapter {
     FreeRTOSAdapter(Protocol *protocol, const char *name, uint32_t stackDepth, UBaseType_t priority,
                     const BaseType_t coreId = 0);
 
-    void setProtocol(Protocol *protocol) { protocol_ = protocol; }
+    void setProtocol(Protocol *protocol);
 
     void output(const char *message) override;
     void handleLog(LogMessage log_message) override;
