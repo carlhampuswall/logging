@@ -22,7 +22,8 @@ void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, char 
     log_msg.timestamp = timesstamp;
 
     if (level < 1 || level >= LOG_LEVEL_COUNT) {
-        adapter_->handleLog(LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid log level"});
+        getInstance()->adapter_->handleLog(
+            LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid log level"});
     }
 
     snprintf(log_msg.origin, ORIGIN_MAX_SIZE, "%s : %s : %d", file, func, line);
@@ -33,5 +34,5 @@ void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, char 
     vsnprintf(log_msg.msg, MSG_MAX_SIZE, fmt, args);
     va_end(args);
 
-    adapter_->handleLog(log_msg);
+    getInstance()->adapter_->handleLog(log_msg);
 }

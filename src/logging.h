@@ -26,8 +26,8 @@ class Logging {
     static void setAdapter(LogAdapter *adapter);
     static void setVerbose(bool verbose);
     static Logging *getInstance();
-    void log(LOG_LEVEL level, bool verbose, unsigned long timestamp, char const *file, char const *func, int line,
-             char const *fmt, ...);
+    static void log(LOG_LEVEL level, bool verbose, unsigned long timestamp, char const *file, char const *func,
+                    int line, char const *fmt, ...);
 
   private:
     Logging() {};
