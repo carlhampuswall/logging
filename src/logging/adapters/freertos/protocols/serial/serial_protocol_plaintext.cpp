@@ -1,5 +1,7 @@
 #include "serial_protocol_plaintext.h"
 
+void SerialProtocolPlaintext::registerKeyHandler(char key, KeyCallback callback) { keyHandlers_[key] = callback; }
+
 void SerialProtocolPlaintext::log(LogMessage log_msg) {
     if (!verbose_ && log_msg.verbose) {
         return;
@@ -28,4 +30,22 @@ void SerialProtocolPlaintext::log(LogMessage log_msg) {
     }
     stream_.println(log_msg.msg);
     stream_.flush();
+}
+
+void SerialProtocolPlaintext::readSerial() {
+    while (stream_.available() > 0) {
+        int b = stream_.read();
+
+        if (keyHandlers_.find(b) != keyHandlers_.end()) {
+            keyHandlers_[b]();
+        } else { // Default key handlers can be overwritten
+            if (b == 'V' || b == 'v') {
+                LOGI("Verbose logging toggle request received");
+                setVerbose(!verbose_);
+            } else if (b == 'O' || b == 'o') {
+                LOGI("Origin logging toggle request received");
+                setOrigin(!origin_);
+            }
+        }
+    }
 }

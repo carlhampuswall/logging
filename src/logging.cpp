@@ -23,7 +23,7 @@ void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, const
 
     if (level < 1 || level >= LOG_LEVEL_COUNT) {
         // return LOG_MESSAGE{LOG_LEVEL_ERROR, false, "logging.cpp", "Invalid log level"};
-        adapter_->handle_log(LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid log level"});
+        adapter_->handleLog(LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid log level"});
     }
 
     char origin_[128];
@@ -39,5 +39,5 @@ void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, const
     vsnprintf(msg_, required_size, fmt, args);
     va_end(args);
 
-    adapter_->handle_log(LogMessage{level, verbose, timesstamp, origin_, msg_});
+    adapter_->handleLog(LogMessage{level, verbose, timesstamp, origin_, msg_});
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "../structs.h"
+#include "structs.h"
 
 class LogAdapter {
   public:
@@ -7,7 +7,7 @@ class LogAdapter {
     virtual ~LogAdapter() {};
 
     virtual void output(const char *message) = 0;
-    virtual void handle_log(LogMessage log_message) = 0;
+    virtual void handleLog(LogMessage log_message) = 0;
 
     virtual void setVerbose(bool verbose) { verbose_ = verbose; }
     virtual void setOrigin(bool origin) { origin_ = origin; }

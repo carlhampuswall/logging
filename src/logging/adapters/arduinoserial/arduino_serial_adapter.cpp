@@ -2,7 +2,7 @@
 
 void ArduinoSerialAdapter::output(const char *message) { Serial.println(message); }
 
-void ArduinoSerialAdapter::handle_log(LogMessage log_msg) {
+void ArduinoSerialAdapter::handleLog(LogMessage log_msg) {
     if (!verbose_ && log_msg.verbose) {
         return;
     } // TODO: Add something to signify verbose logging

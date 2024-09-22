@@ -12,10 +12,11 @@ class FreeRTOSAdapter : public LogAdapter {
   public:
     FreeRTOSAdapter(Protocol *protocol, const char *name, uint32_t stackDepth, UBaseType_t priority,
                     const BaseType_t coreId = 0);
-    // ~FreeRTOSAdapter() {};
+
+    void setProtocol(Protocol *protocol) { protocol_ = protocol; }
 
     void output(const char *message) override;
-    void handle_log(LogMessage log_message) override;
+    void handleLog(LogMessage log_message) override;
 
     void setVerbose(bool verbose) override;
     void setOrigin(bool origin) override;
@@ -23,6 +24,8 @@ class FreeRTOSAdapter : public LogAdapter {
   private:
     LoggingTask logging_task_;
     Protocol *protocol_ = nullptr;
+
+    SemaphoreHandle_t mutex_;
 
 #if defined(CONFIG_IDF_TARGET_ESP32S3) && !SK_FORCE_UART_STREAM
     HWCDC stream_;

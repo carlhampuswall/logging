@@ -3,8 +3,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "adapters/arduinoserial/arduino_serial_adapter.h"
-#include "adapters/log_adapter.h"
+#include "logging/adapters/arduinoserial/arduino_serial_adapter.h"
+#include "logging/adapters/log_adapter.h"
 
 #include "structs.h"
 

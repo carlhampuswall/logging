@@ -3,7 +3,7 @@
 #include <functional>
 
 // #include "logging/logger_task.h"
-#include "adapters/freertos/protocols/protocol.h"
+#include "../protocol.h"
 
 #define SERIAL_PROTOCOL_LEGACY 0
 #define SERIAL_PROTOCOL_PROTO 1
@@ -16,5 +16,7 @@ class SerialProtocol : public Protocol {
     virtual ~SerialProtocol() {}
 
   protected:
+    virtual void readSerial();
+
     Stream &stream_;
 };
