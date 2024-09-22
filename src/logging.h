@@ -2,6 +2,7 @@
 #include <cstring>
 #include <stdarg.h>
 #include <stdio.h>
+#include <vector>
 
 #include "logging/adapters/arduinoserial/arduino_serial_adapter.h"
 #include "logging/adapters/log_adapter.h"
@@ -9,9 +10,7 @@
 #include "structs.h"
 
 #define LOG(log_level, verbose, ...)                                                                                   \
-    do {                                                                                                               \
-        Logging::getInstance()->log(log_level, verbose, millis(), __FILE__, __func__, __LINE__, __VA_ARGS__);          \
-    } while (0)
+    Logging::getInstance()->log(log_level, verbose, millis(), __FILE__, __func__, __LINE__, __VA_ARGS__);
 
 #define LOGI(...) LOG(LOG_LEVEL_INFO, false, __VA_ARGS__);
 #define LOGW(...) LOG(LOG_LEVEL_WARNING, false, __VA_ARGS__);
@@ -27,14 +26,14 @@ class Logging {
     static void setAdapter(LogAdapter *adapter);
     static void setVerbose(bool verbose);
     static Logging *getInstance();
-    void log(LOG_LEVEL level, bool verbose, unsigned long timestamp, const char *file, const char *func, int line,
-             const char *fmt, ...);
+    void log(LOG_LEVEL level, bool verbose, unsigned long timestamp, char const *file, char const *func, int line,
+             char const *fmt, ...);
 
   private:
     Logging() {};
     ~Logging() {};
 
-    LogAdapter *adapter_ = nullptr;
+    LogAdapter *adapter_ = new ArduinoSerialAdapter();
 
     Logging(const Logging &) = delete;
     Logging &operator=(const Logging &) = delete;

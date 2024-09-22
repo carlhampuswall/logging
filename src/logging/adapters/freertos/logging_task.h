@@ -11,9 +11,9 @@ class LoggingTask : public FreeRTOS::Task<LoggingTask> {
     LoggingTask(SemaphoreHandle_t mutex, Protocol *protocol, const char *name, uint32_t stackDepth,
                 UBaseType_t priority, const BaseType_t coreId = tskNO_AFFINITY)
         : FreeRTOS::Task<LoggingTask>{name, stackDepth, priority, coreId},
-          log_queue(xQueueCreate(10, sizeof(LogMessage))), protocol_(protocol), mutex_(mutex) {}
+          log_queue(xQueueCreate(4, sizeof(LogMessage))), protocol_(protocol), mutex_(mutex) {}
 
-    void enqueue_log(LogMessage log_message);
+    void enqueue_log(const LogMessage &log_message);
 
     void run();
 

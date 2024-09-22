@@ -33,3 +33,7 @@ void ArduinoSerialAdapter::handleLog(LogMessage log_msg) {
 
     output(msg.c_str());
 }
+
+void ArduinoSerialAdapter::setVerbose(bool verbose) { verbose_ = verbose; }
+
+void ArduinoSerialAdapter::setOrigin(bool origin) { origin_ = origin; }

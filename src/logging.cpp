@@ -14,30 +14,24 @@ Logging *Logging::getInstance() {
     return &instance_;
 }
 
-void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, const char *file, const char *func, int line,
-                  const char *fmt, ...) {
-    if (adapter_ == nullptr) {
-        setAdapter(new ArduinoSerialAdapter());
-        // return; // TODO: throw exception? for now set default adapter
-    }
+void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, char const *file, char const *func, int line,
+                  char const *fmt, ...) {
+    LogMessage log_msg;
+    log_msg.level = level;
+    log_msg.verbose = verbose;
+    log_msg.timestamp = timesstamp;
 
     if (level < 1 || level >= LOG_LEVEL_COUNT) {
-        // return LOG_MESSAGE{LOG_LEVEL_ERROR, false, "logging.cpp", "Invalid log level"};
         adapter_->handleLog(LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid log level"});
     }
 
-    char origin_[128];
-    snprintf(origin_, sizeof(origin_), "%s:%s:%d", file, func, line);
+    snprintf(log_msg.origin, ORIGIN_MAX_SIZE, "%s : %s : %d", file, func, line);
+    log_msg.origin[ORIGIN_MAX_SIZE - 1] = '\0'; // Ensure null-termination
 
     va_list args;
     va_start(args, fmt);
-    int required_size = vsnprintf(nullptr, 0, fmt, args) + 1;
+    vsnprintf(log_msg.msg, MSG_MAX_SIZE, fmt, args);
     va_end(args);
 
-    char *msg_ = new char[required_size];
-    va_start(args, fmt);
-    vsnprintf(msg_, required_size, fmt, args);
-    va_end(args);
-
-    adapter_->handleLog(LogMessage{level, verbose, timesstamp, origin_, msg_});
+    adapter_->handleLog(log_msg);
 }

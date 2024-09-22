@@ -1,13 +1,6 @@
 #include "logging_task.h"
 
 void LoggingTask::run() {
-
-    // SerialProtocolPlaintext serial_protocol_(stream_);
-    // protocol_ = &serial_protocol_;
-
-    // Delay to allow stream to initialize
-    delay(1000);
-
     while (1) {
         if (xQueueReceive(log_queue, &log_msg, 0)) {
             protocol_->log(log_msg);
@@ -17,4 +10,8 @@ void LoggingTask::run() {
     }
 }
 
-void LoggingTask::enqueue_log(LogMessage log_message) { xQueueSend(log_queue, &log_message, 0); }
+void LoggingTask::enqueue_log(const LogMessage &log_message) {
+    if (xQueueSend(log_queue, &log_message, pdMS_TO_TICKS(10)) != pdTRUE) {
+        throw std::runtime_error("Failed to send log message to queue");
+    }
+}

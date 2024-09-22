@@ -26,10 +26,4 @@ class FreeRTOSAdapter : public LogAdapter {
     Protocol *protocol_ = nullptr;
 
     SemaphoreHandle_t mutex_;
-
-#if defined(CONFIG_IDF_TARGET_ESP32S3) && !SK_FORCE_UART_STREAM
-    HWCDC stream_;
-#else
-    UartStream stream_;
-#endif
 };

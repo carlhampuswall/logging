@@ -7,7 +7,6 @@ FreeRTOSAdapter::FreeRTOSAdapter(Protocol *protocol, const char *name, uint32_t 
                            } {
     mutex_ = xSemaphoreCreateMutex();
 
-    stream_.begin();
     logging_task_.begin();
 }
 
@@ -15,11 +14,23 @@ void FreeRTOSAdapter::output(const char *message) {
     // Serial.println(message);
 }
 
-void FreeRTOSAdapter::handleLog(LogMessage log_msg) { logging_task_.enqueue_log(log_msg); }
+void FreeRTOSAdapter::handleLog(LogMessage log_msg) {
+    xSemaphoreTake(mutex_, portMAX_DELAY);
+    logging_task_.enqueue_log(log_msg);
+    xSemaphoreGive(mutex_);
+}
 
-void FreeRTOSAdapter::setVerbose(bool verbose) { protocol_->setVerbose(verbose); }
+void FreeRTOSAdapter::setVerbose(bool verbose) {
+    xSemaphoreTake(mutex_, portMAX_DELAY);
+    protocol_->setVerbose(verbose);
+    xSemaphoreGive(mutex_);
+}
 
-void FreeRTOSAdapter::setOrigin(bool origin) { protocol_->setOrigin(origin); }
+void FreeRTOSAdapter::setOrigin(bool origin) {
+    xSemaphoreTake(mutex_, portMAX_DELAY);
+    protocol_->setOrigin(origin);
+    xSemaphoreGive(mutex_);
+}
 
 void FreeRTOSAdapter::setProtocol(Protocol *protocol) {
     xSemaphoreTake(mutex_, portMAX_DELAY);

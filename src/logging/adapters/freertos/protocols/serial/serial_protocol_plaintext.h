@@ -18,7 +18,7 @@ class SerialProtocolPlaintext : public SerialProtocol {
 
     void registerKeyHandler(char key, KeyCallback callback);
 
-    void log(LogMessage log_msg) override;
+    void log(const LogMessage &log_msg) override;
     void readSerial() override;
 
   private:
