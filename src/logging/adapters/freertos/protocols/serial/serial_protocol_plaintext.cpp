@@ -14,7 +14,7 @@ void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
     }
 
     if (log_msg.verbose) {
-        msg_ += "[V] ";
+        msg_ += "[V]";
     }
 
     switch (log_msg.level) {
