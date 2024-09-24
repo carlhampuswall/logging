@@ -13,6 +13,11 @@ class LogAdapter {
     virtual void setOrigin(bool origin);
 
   protected:
+#ifdef VERBOSE_LOGGING_DEFAULT
+    bool verbose_ = true;
+#else
     bool verbose_ = false;
+#endif
+
     bool origin_ = false;
 };

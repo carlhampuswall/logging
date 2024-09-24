@@ -1,10 +1,5 @@
 #include "logging.h"
 
-// bool operator==(const LOG_MESSAGE &lhs, const LOG_MESSAGE &rhs) {
-//     return lhs.level == rhs.level && lhs.verbose == rhs.verbose && strcmp(lhs.origin, rhs.origin) == 0 &&
-//            strcmp(lhs.message, rhs.message) == 0;
-// }
-
 void Logging::setAdapter(LogAdapter *adapter) { getInstance()->adapter_ = adapter; };
 
 void Logging::setVerbose(bool verbose) { getInstance()->adapter_->setVerbose(verbose); }
