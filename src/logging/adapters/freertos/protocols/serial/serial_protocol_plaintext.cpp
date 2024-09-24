@@ -13,21 +13,25 @@ void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
         msg_ += log_msg.origin;
     }
 
+    if (log_msg.verbose) {
+        msg_ += "[V] ";
+    }
+
     switch (log_msg.level) {
     case LOG_LEVEL_INFO:
-        msg_ += "\u001b[37m INFO:\033[0m ";
+        msg_ += "\u001b[37m[INFO]\033[0m ";
         break;
     case LOG_LEVEL_WARNING:
-        msg_ += "\u001b[33m WARNING:\033[0m ";
+        msg_ += "\u001b[33m[WARNING]\033[0m ";
         break;
     case LOG_LEVEL_ERROR:
-        msg_ += "\u001b[31m ERROR:\033[0m ";
+        msg_ += "\u001b[31m[ERROR]\033[0m ";
         break;
     case LOG_LEVEL_DEBUG:
-        msg_ += "\u001b[32m DEBUG:\033[0m ";
+        msg_ += "\u001b[32m[DEBUG]\033[0m ";
         break;
     default:
-        msg_ += "\u001b[37m  INFO:\033[0m ";
+        msg_ += "\u001b[37m[INFO]\033[0m ";
         break;
     }
     msg_ += log_msg.msg;
