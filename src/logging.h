@@ -21,7 +21,7 @@
 #define VERBOSE_LOGGING_DEFAULT false
 #endif
 
-#define LOG (...) LOG_WITH_LEVEL(DEFAULT_LOG_LEVEL, false, __VA_ARGS__);
+#define LOG(...) LOG_WITH_LEVEL(DEFAULT_LOG_LEVEL, false, __VA_ARGS__);
 
 #define LOG_WITH_LEVEL(log_level, verbose, ...)                                                                        \
     Logging::getInstance()->log(log_level, verbose, millis(), __FILE__, __func__, __LINE__, __VA_ARGS__);
