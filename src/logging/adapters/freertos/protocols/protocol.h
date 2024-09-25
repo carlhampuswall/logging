@@ -8,6 +8,7 @@ class Protocol {
     Protocol() {};
     ~Protocol() {};
     virtual void log(const LogMessage &log_msg) = 0;
+    virtual void log_raw(const char *msg) = 0;
     virtual void read() = 0;
 
     void setVerbose(bool verbose) { verbose_ = verbose; }

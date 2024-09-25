@@ -38,6 +38,8 @@ void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
     stream_.println(msg_.c_str());
 }
 
+void SerialProtocolPlaintext::log_raw(const char *msg) { stream_.println(msg); }
+
 void SerialProtocolPlaintext::readSerial() {
     while (stream_.available() > 0) {
         int b = stream_.read();

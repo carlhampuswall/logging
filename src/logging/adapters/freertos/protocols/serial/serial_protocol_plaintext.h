@@ -6,9 +6,6 @@
 #include "logging.h"
 #include <map>
 
-typedef std::function<void(void)> DemoConfigChangeCallback;
-typedef std::function<void(void)> OperationModeToggleCallback;
-
 class SerialProtocolPlaintext : public SerialProtocol {
   public:
     using KeyCallback = std::function<void()>;
@@ -19,6 +16,7 @@ class SerialProtocolPlaintext : public SerialProtocol {
     void registerKeyHandler(char key, KeyCallback callback);
 
     void log(const LogMessage &log_msg) override;
+    void log_raw(const char *msg) override;
     void readSerial() override;
 
   private:
