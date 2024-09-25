@@ -15,7 +15,7 @@ class Protocol {
     void setOrigin(bool origin) { origin_ = origin; }
 
   protected:
-#ifdef VERBOSE_LOGGING_DEFAULT
+#if VERBOSE_LOGGING_DEFAULT
     bool verbose_ = true;
 #else
     bool verbose_ = false;
