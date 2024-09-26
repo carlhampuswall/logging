@@ -9,32 +9,33 @@ void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
 
     std::string msg_ = "";
 
-    if (origin_) {
-        msg_ += log_msg.origin;
-    }
-
     if (log_msg.verbose) {
         msg_ += "[V]";
     }
 
     switch (log_msg.level) {
     case LOG_LEVEL_INFO:
-        msg_ += "\u001b[37m[INFO]\033[0m ";
+        msg_ += LOGGING_GRAY_TEXT "[INFO] " LOGGING_RESET_COLOR;
         break;
     case LOG_LEVEL_WARNING:
-        msg_ += "\u001b[33m[WARNING]\033[0m ";
+        msg_ += LOGGING_YELLOW_TEXT "[WARNING] " LOGGING_RESET_COLOR;
         break;
     case LOG_LEVEL_ERROR:
-        msg_ += "\u001b[31m[ERROR]\033[0m ";
+        msg_ += LOGGING_RED_TEXT "[ERROR] " LOGGING_RESET_COLOR;
         break;
     case LOG_LEVEL_DEBUG:
-        msg_ += "\u001b[32m[DEBUG]\033[0m ";
+        msg_ += LOGGING_GREEN_TEXT "[DEBUG] " LOGGING_RESET_COLOR;
         break;
     default:
-        msg_ += "\u001b[37m[INFO]\033[0m ";
+        msg_ += LOGGING_GRAY_TEXT "[INFO] " LOGGING_RESET_COLOR;
         break;
     }
+
     msg_ += log_msg.msg;
+
+    if (origin_) {
+        msg_ += LOGGING_CYAN_TEXT " [" + std::string(log_msg.origin) + "]" LOGGING_RESET_COLOR;
+    }
     stream_.println(msg_.c_str());
 }
 

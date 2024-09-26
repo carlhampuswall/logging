@@ -44,6 +44,7 @@ class Logging {
   public:
     static void setAdapter(LogAdapter *adapter);
     static void setVerbose(bool verbose);
+    static void setOrigin(bool origin);
     static Logging *getInstance();
     static void log(LOG_LEVEL level, bool verbose, unsigned long timestamp, char const *file, char const *func,
                     int line, char const *fmt, ...);

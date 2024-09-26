@@ -3,6 +3,7 @@
 void Logging::setAdapter(LogAdapter *adapter) { getInstance()->adapter_ = adapter; };
 
 void Logging::setVerbose(bool verbose) { getInstance()->adapter_->setVerbose(verbose); }
+void Logging::setOrigin(bool origin) { getInstance()->adapter_->setOrigin(origin); }
 
 Logging *Logging::getInstance() {
     static Logging instance_;
@@ -21,7 +22,8 @@ void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, char 
             LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid log level"});
     }
 
-    snprintf(log_msg.origin, ORIGIN_MAX_SIZE, "%s : %s : %d", file, func, line);
+    snprintf(log_msg.origin, ORIGIN_MAX_SIZE, "%s:%d - %s", strrchr(file, '/') ? strrchr(file, '/') + 1 : file, line,
+             func);
     log_msg.origin[ORIGIN_MAX_SIZE - 1] = '\0'; // Ensure null-termination
 
     va_list args;
