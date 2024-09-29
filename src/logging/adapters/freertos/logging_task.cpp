@@ -9,6 +9,10 @@
 #endif
 
 void LoggingTask::run() {
+    while (!protocol_->isAvailable()) {
+        delay(100); // Wait for protocol to be available, add timeout!
+    }
+
 #if ENABLE_LOGGING_INIT_MESSAGE
     protocol_->log_raw(LOGGING_BOLD_TEXT LOGGING_BLUE_TEXT
                        "*******************************************" LOGGING_RESET_COLOR);
