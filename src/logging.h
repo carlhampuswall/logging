@@ -30,15 +30,15 @@
 
 #define LOG_WITH_LEVEL(log_level, verbose, ...)                                                                        \
     Logging::getInstance()->log(log_level, verbose, millis(), __FILE__, __func__, __LINE__, __VA_ARGS__);
+#else
+#define LOG(...) ;                                // Do nothing
+#define LOG_WITH_LEVEL(log_level, verbose, ...) ; // Do nothing
+#endif
 
 #define LOGI(...) LOG_WITH_LEVEL(LOG_LEVEL_INFO, false, __VA_ARGS__);
 #define LOGW(...) LOG_WITH_LEVEL(LOG_LEVEL_WARNING, false, __VA_ARGS__);
 #define LOGE(...) LOG_WITH_LEVEL(LOG_LEVEL_ERROR, false, __VA_ARGS__);
 #define LOGD(...) LOG_WITH_LEVEL(LOG_LEVEL_DEBUG, false, __VA_ARGS__);
-#else
-#define LOG(...) ;                                // Do nothing
-#define LOG_WITH_LEVEL(log_level, verbose, ...) ; // Do nothing
-#endif
 
 #if ENABLE_VERBOSE_LOGGING
 #define LOGV(log_level, ...) LOG_WITH_LEVEL(log_level, true, __VA_ARGS__);
