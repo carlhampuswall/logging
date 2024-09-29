@@ -3,7 +3,7 @@
 void SerialProtocolPlaintext::registerKeyHandler(char key, KeyCallback callback) { keyHandlers_[key] = callback; }
 
 void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
-    while (stream_.availableForWrite() == 0) {
+    while (stream_.availableForWrite() == 0) { // TODO - Add timeout
         delay(1);
     }
     if (!verbose_ && log_msg.verbose) {
@@ -43,7 +43,7 @@ void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
 }
 
 void SerialProtocolPlaintext::log_raw(const char *msg) {
-    while (stream_.availableForWrite() == 0) {
+    while (stream_.availableForWrite() == 0) { // TODO - Add timeout
         delay(1);
     }
     stream_.println(msg);
