@@ -18,7 +18,6 @@ class SerialProtocolPlaintext : public SerialProtocol {
     void log(const LogMessage &log_msg) override;
     void log_raw(const char *msg) override;
     void readSerial() override;
-    bool isAvailable() override { return stream_.available() > 0; }
 
   private:
     std::map<char, KeyCallback> keyHandlers_;

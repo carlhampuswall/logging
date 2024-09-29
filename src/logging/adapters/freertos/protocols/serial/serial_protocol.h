@@ -17,8 +17,8 @@ class SerialProtocol : public Protocol {
 
     void read() override { readSerial(); }
 
+    Stream &stream_;
+
   protected:
     virtual void readSerial();
-
-    Stream &stream_;
 };
