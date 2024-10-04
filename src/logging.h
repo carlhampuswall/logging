@@ -62,7 +62,7 @@ class Logging {
     Logging() {};
     ~Logging() {};
 
-    LogAdapter *adapter_ = new ArduinoSerialAdapter();
+    LogAdapter *adapter_ = nullptr;
 
     Logging(const Logging &) = delete;
     Logging &operator=(const Logging &) = delete;

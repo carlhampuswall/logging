@@ -14,8 +14,9 @@
 
 void LoggingTask::run() {
 
-    delay(LOGGING_DELAY); // Delay before actual logging starts. This is to allow the serial port to initialize properly
-                          // and to prevent the first log messages from being lost
+    vTaskDelay(
+        pdMS_TO_TICKS(LOGGING_DELAY)); // Delay before actual logging starts. This is to allow the serial port to
+                                       // initialize properly and to prevent the first log messages from being lost
 
 #if ENABLE_LOGGING_INIT_MESSAGE
     protocol_->log_raw(LOGGING_BOLD_TEXT LOGGING_BLUE_TEXT
