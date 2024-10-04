@@ -5,20 +5,17 @@ void Logging::setAdapter(LogAdapter *adapter) {
         return;
     }
 
-    uint32_t startTime = millis(); // Track when the attempt started
+    uint32_t startTime = millis();
 
-    // Retry mechanism: check if the adapter is available, retry up to 5 seconds
     while (!adapter->available()) {
-        vTaskDelay(pdMS_TO_TICKS(100)); // Use FreeRTOS-friendly delay (100 ms intervals)
+        delay(100);
 
-        // Timeout after 5 seconds (5000 ms)
         if (millis() - startTime > 5000) {
             Serial.println("Error: Adapter not available after 5 seconds.");
-            return; // Exit the function if the adapter doesn't become available
+            return;
         }
     }
 
-    // If the adapter is available, set it
     getInstance()->adapter_ = adapter;
 }
 
