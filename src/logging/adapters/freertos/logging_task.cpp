@@ -52,12 +52,13 @@ void LoggingTask::run() {
             protocol_->log(log_msg);
         }
         protocol_->read();
-        delay(1);
+        delay(25);
     }
 }
 
 void LoggingTask::enqueue_log(const LogMessage &log_message) {
-    if (xQueueSend(log_queue, &log_message, pdMS_TO_TICKS(10)) != pdTRUE) {
-        throw std::runtime_error("Failed to send log message to queue");
+    if (xQueueSend(log_queue, &log_message, pdMS_TO_TICKS(100)) != pdTRUE) {
+        // TODO handle overflow of queue, below line throws an exception but doesnt log anything useful to the end user.
+        // throw std::runtime_error("Failed to send log message to queue");
     }
 }

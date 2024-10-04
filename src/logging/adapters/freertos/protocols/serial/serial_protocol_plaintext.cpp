@@ -47,7 +47,7 @@ void SerialProtocolPlaintext::readSerial() {
 
         if (keyHandlers_.find(b) != keyHandlers_.end()) {
             keyHandlers_[b]();
-        } else { // Default key handlers can be overwritten
+        } else { //! Default key handlers can be overwritten
             if (b == 'V' || b == 'v') {
                 LOGI("Verbose logging toggle request received");
                 setVerbose(!verbose_);
