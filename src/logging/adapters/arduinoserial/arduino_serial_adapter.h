@@ -11,4 +11,6 @@ class ArduinoSerialAdapter : public LogAdapter {
 
     void setVerbose(bool verbose) override;
     void setOrigin(bool origin) override;
+
+    bool available() override { return true; } // TODO Implement
 };

@@ -37,3 +37,11 @@ void FreeRTOSAdapter::setProtocol(Protocol *protocol) {
     protocol_ = protocol;
     xSemaphoreGive(mutex_);
 }
+
+bool FreeRTOSAdapter::available() {
+    if (logging_task_.getHandle() == nullptr) {
+        return false;
+    }
+
+    return eTaskGetState(logging_task_.getHandle()) == eRunning || eTaskGetState(logging_task_.getHandle()) == eReady;
+}

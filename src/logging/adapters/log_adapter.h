@@ -12,6 +12,8 @@ class LogAdapter {
     virtual void setVerbose(bool verbose);
     virtual void setOrigin(bool origin);
 
+    virtual bool available();
+
   protected:
 #if VERBOSE_LOGGING_DEFAULT
     bool verbose_ = true;

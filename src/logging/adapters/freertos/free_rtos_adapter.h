@@ -21,6 +21,8 @@ class FreeRTOSAdapter : public LogAdapter {
     void setVerbose(bool verbose) override;
     void setOrigin(bool origin) override;
 
+    bool available() override;
+
   private:
     LoggingTask logging_task_;
     Protocol *protocol_ = nullptr;
