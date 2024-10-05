@@ -46,8 +46,16 @@ void SerialProtocolPlaintext::readSerial() {
         int b = stream_.read();
 
         if (keyHandlers_.find(b) != keyHandlers_.end()) {
-            keyHandlers_[b]();
-        } else { //! Default key handlers can be overwritten
+            auto handler = new std::function<void()>(keyHandlers_[b]);
+            xTaskCreate(
+                [](void *param) {
+                    auto handler = reinterpret_cast<std::function<void()> *>(param);
+                    (*handler)();
+                    delete handler;
+                    vTaskDelete(NULL);
+                },
+                "key_handler_task", 1024 * 8, handler, 5, NULL); // TODO stack size and priority?
+        } else {                                                 //! Default key handlers can be overwritten
             if (b == 'V' || b == 'v') {
                 LOGI("Verbose logging toggle request received");
                 setVerbose(!verbose_);

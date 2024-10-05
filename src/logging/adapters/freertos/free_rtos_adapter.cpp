@@ -39,9 +39,10 @@ void FreeRTOSAdapter::setProtocol(Protocol *protocol) {
 }
 
 bool FreeRTOSAdapter::available() {
-    if (logging_task_.getHandle() == nullptr) {
+    TaskHandle_t taskHandle = logging_task_.getHandle();
+    if (taskHandle == nullptr) {
         return false;
     }
-
-    return eTaskGetState(logging_task_.getHandle()) == eRunning || eTaskGetState(logging_task_.getHandle()) == eReady;
+    eTaskState taskState = eTaskGetState(taskHandle);
+    return taskState == eRunning || taskState == eReady;
 }
