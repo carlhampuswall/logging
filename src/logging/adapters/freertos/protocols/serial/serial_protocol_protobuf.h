@@ -14,8 +14,13 @@
 // - MaxTxSize: Maximum size of the transmit buffer.
 // - MaxRxSize: Maximum size of the receive buffer.
 
+// Add additional template parameters for PacketSerial_
 template <typename TxMessage, typename RxMessage, const pb_field_t *TxFields, const pb_field_t *RxFields,
-          size_t MaxTxSize, size_t MaxRxSize>
+          size_t MaxTxSize, size_t MaxRxSize,
+          typename EncoderType,                // Add encoder type
+          unsigned char PacketMarker = 0,      // Default packet marker
+          unsigned int ReceiveBufferSize = 256 // Default receive buffer size
+          >
 class SerialProtocolProtobuf : public SerialProtocol {
   public:
     SerialProtocolProtobuf(Stream &stream, std::function<void(const RxMessage &)> message_callback);
@@ -27,7 +32,7 @@ class SerialProtocolProtobuf : public SerialProtocol {
 
   private:
     Stream &stream_;
-    PacketSerial_<> packet_serial_;
+    PacketSerial_<EncoderType, PacketMarker, ReceiveBufferSize> packet_serial_; // Correctly instantiate PacketSerial_
     std::function<void(const RxMessage &)> message_callback_;
 
     // Handle incoming packets

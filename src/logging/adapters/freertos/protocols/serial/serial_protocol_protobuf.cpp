@@ -1,14 +1,20 @@
 #include "serial_protocol_protobuf.h"
 
+// Update the template parameter list in the implementation
 template <typename TxMessage, typename RxMessage, const pb_field_t *TxFields, const pb_field_t *RxFields,
-          size_t MaxTxSize, size_t MaxRxSize>
-SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize>
-    *SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize>::instance_ = nullptr;
+          size_t MaxTxSize, size_t MaxRxSize, typename EncoderType, unsigned char PacketMarker,
+          unsigned int ReceiveBufferSize>
+SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize, EncoderType, PacketMarker,
+                       ReceiveBufferSize>
+    *SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize, EncoderType, PacketMarker,
+                            ReceiveBufferSize>::instance_ = nullptr;
 
 template <typename TxMessage, typename RxMessage, const pb_field_t *TxFields, const pb_field_t *RxFields,
-          size_t MaxTxSize, size_t MaxRxSize>
-SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize>::SerialProtocolProtobuf(
-    Stream &stream, std::function<void(const RxMessage &)> message_callback)
+          size_t MaxTxSize, size_t MaxRxSize, typename EncoderType, unsigned char PacketMarker,
+          unsigned int ReceiveBufferSize>
+SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize, EncoderType, PacketMarker,
+                       ReceiveBufferSize>::SerialProtocolProtobuf(Stream &stream, std::function<void(const RxMessage &)>
+                                                                                      message_callback)
     : stream_(stream), message_callback_(message_callback) {
     packet_serial_.setStream(&stream_);
 
@@ -19,15 +25,18 @@ SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxR
 }
 
 template <typename TxMessage, typename RxMessage, const pb_field_t *TxFields, const pb_field_t *RxFields,
-          size_t MaxTxSize, size_t MaxRxSize>
-void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize>::loop() {
+          size_t MaxTxSize, size_t MaxRxSize, typename EncoderType, unsigned char PacketMarker,
+          unsigned int ReceiveBufferSize>
+void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize, EncoderType, PacketMarker,
+                            ReceiveBufferSize>::loop() {
     packet_serial_.update();
 }
 
 template <typename TxMessage, typename RxMessage, const pb_field_t *TxFields, const pb_field_t *RxFields,
-          size_t MaxTxSize, size_t MaxRxSize>
-void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize>::send(
-    const TxMessage &msg) {
+          size_t MaxTxSize, size_t MaxRxSize, typename EncoderType, unsigned char PacketMarker,
+          unsigned int ReceiveBufferSize>
+void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize, EncoderType, PacketMarker,
+                            ReceiveBufferSize>::send(const TxMessage &msg) {
     uint8_t buffer[MaxTxSize + 4]; // Additional 4 bytes for CRC32
 
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer) - 4);
@@ -52,9 +61,10 @@ void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize,
 }
 
 template <typename TxMessage, typename RxMessage, const pb_field_t *TxFields, const pb_field_t *RxFields,
-          size_t MaxTxSize, size_t MaxRxSize>
-void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize>::handlePacket(
-    const uint8_t *buffer, size_t size) {
+          size_t MaxTxSize, size_t MaxRxSize, typename EncoderType, unsigned char PacketMarker,
+          unsigned int ReceiveBufferSize>
+void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize, EncoderType, PacketMarker,
+                            ReceiveBufferSize>::handlePacket(const uint8_t *buffer, size_t size) {
     if (size <= 4) {
         // Ignore packets that are too small to contain data and CRC32
         return;
@@ -88,9 +98,10 @@ void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize,
 }
 
 template <typename TxMessage, typename RxMessage, const pb_field_t *TxFields, const pb_field_t *RxFields,
-          size_t MaxTxSize, size_t MaxRxSize>
-void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize>::packetHandlerStatic(
-    const uint8_t *buffer, size_t size) {
+          size_t MaxTxSize, size_t MaxRxSize, typename EncoderType, unsigned char PacketMarker,
+          unsigned int ReceiveBufferSize>
+void SerialProtocolProtobuf<TxMessage, RxMessage, TxFields, RxFields, MaxTxSize, MaxRxSize, EncoderType, PacketMarker,
+                            ReceiveBufferSize>::packetHandlerStatic(const uint8_t *buffer, size_t size) {
     if (instance_) {
         instance_->handlePacket(buffer, size);
     }
