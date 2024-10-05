@@ -25,10 +25,10 @@ void LoggingTask::run() {
     protocol_->log_raw(LOGGING_BOLD_TEXT LOGGING_BLUE_TEXT
                        "*******************************************" LOGGING_RESET_COLOR);
     protocol_->log_raw("");
-    protocol_->log_raw(LOGGING_GREEN_TEXT "Press 'V' to toggle verbose logging" LOGGING_RESET_COLOR);
     protocol_->log_raw(LOGGING_GREEN_TEXT "Press 'O' to toggle origin logging" LOGGING_RESET_COLOR);
-    protocol_->log_raw(LOGGING_YELLOW_TEXT "[V] = Verbose logging indicator" LOGGING_RESET_COLOR);
+    protocol_->log_raw(LOGGING_GREEN_TEXT "Press 'V' to toggle verbose logging" LOGGING_RESET_COLOR);
     protocol_->log_raw("");
+    protocol_->log_raw(LOGGING_YELLOW_TEXT "[V] = Verbose logging indicator" LOGGING_RESET_COLOR);
 #if ENABLE_VERBOSE_LOGGING
 #if VERBOSE_LOGGING_DEFAULT
     protocol_->log_raw(LOGGING_BOLD_TEXT "Verbose logging is currently: " LOGGING_GREEN_TEXT
