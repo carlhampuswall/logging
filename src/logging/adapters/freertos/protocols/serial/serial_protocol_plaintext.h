@@ -14,6 +14,7 @@ class SerialProtocolPlaintext : public SerialProtocol {
     ~SerialProtocolPlaintext() {}
 
     void registerKeyHandler(char key, KeyCallback callback);
+    void registerKeyHandler(const char keys[], size_t key_count, KeyCallback callback);
 
     void log(const LogMessage &log_msg) override;
     void log_raw(const char *msg) override;
