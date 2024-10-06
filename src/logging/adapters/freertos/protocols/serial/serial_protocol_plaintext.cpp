@@ -43,6 +43,11 @@ void SerialProtocolPlaintext::log_raw(const char *msg) { stream_.println(msg); }
 
 void SerialProtocolPlaintext::readSerial() {
     while (stream_.available() > 0) {
+        if (stream_.available() > 1) { // TODO Fixes bug or something that seems to ouput something to serial at conn to
+                                       // TODO it if connections inst established directly at boot!?
+            return;
+        }
+
         int b = stream_.read();
 
         if (keyHandlers_.find(b) != keyHandlers_.end()) {
