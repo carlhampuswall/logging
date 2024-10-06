@@ -34,6 +34,7 @@ void FreeRTOSAdapter::setProtocol(Protocol *protocol) {
     xSemaphoreTake(mutex_, portMAX_DELAY);
     protocol_ = protocol;
     xSemaphoreGive(mutex_);
+    logging_task_.setProtocol(protocol);
 }
 
 bool FreeRTOSAdapter::available() {
