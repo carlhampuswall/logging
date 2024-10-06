@@ -1,12 +1,10 @@
 #include "free_rtos_adapter.h"
 
-FreeRTOSAdapter::FreeRTOSAdapter(Protocol *protocol, const char *name, uint32_t stackDepth, UBaseType_t priority,
-                                 const BaseType_t coreId)
-    : protocol_{protocol}, logging_task_{
-                               mutex_, protocol, name, stackDepth, priority, coreId,
-                           } {
-    mutex_ = xSemaphoreCreateMutex();
-
+FreeRTOSAdapter::FreeRTOSAdapter(Protocol *protocol, SemaphoreHandle_t mutex, const char *name, uint32_t stackDepth,
+                                 UBaseType_t priority, const BaseType_t coreId)
+    : protocol_{protocol}, mutex_(mutex), logging_task_{
+                                              mutex, protocol, name, stackDepth, priority, coreId,
+                                          } {
     logging_task_.begin();
 }
 

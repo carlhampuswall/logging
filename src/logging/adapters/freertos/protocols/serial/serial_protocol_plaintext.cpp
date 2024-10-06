@@ -2,12 +2,6 @@
 
 void SerialProtocolPlaintext::registerKeyHandler(char key, KeyCallback callback) { keyHandlers_[key] = callback; }
 
-void SerialProtocolPlaintext::registerKeyHandler(const char keys[], size_t key_count, KeyCallback callback) {
-    for (size_t i = 0; i < key_count; i++) {
-        keyHandlers_[keys[i]] = callback;
-    }
-}
-
 void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
     if (!verbose_ && log_msg.verbose) {
         return;

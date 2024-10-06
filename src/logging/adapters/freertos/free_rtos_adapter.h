@@ -10,8 +10,8 @@
 
 class FreeRTOSAdapter : public LogAdapter {
   public:
-    FreeRTOSAdapter(Protocol *protocol, const char *name, uint32_t stackDepth, UBaseType_t priority,
-                    const BaseType_t coreId = 0);
+    FreeRTOSAdapter(Protocol *protocol, SemaphoreHandle_t mutex, const char *name, uint32_t stackDepth,
+                    UBaseType_t priority, const BaseType_t coreId = 0);
 
     void setProtocol(Protocol *protocol);
 

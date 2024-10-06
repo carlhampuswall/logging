@@ -17,6 +17,8 @@ class LoggingTask : public FreeRTOS::Task<LoggingTask> {
 
     void run();
 
+    void setProtocol(Protocol *protocol);
+
   private:
     // LogAdapter *adapter_;
     Protocol *protocol_;

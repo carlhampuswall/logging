@@ -17,7 +17,7 @@ void LoggingTask::run() {
     vTaskDelay(
         pdMS_TO_TICKS(LOGGING_DELAY)); // Delay before actual logging starts. This is to allow the serial port to
                                        // initialize properly and to prevent the first log messages from being lost
-
+    xSemaphoreTake(mutex_, portMAX_DELAY);
 #if ENABLE_LOGGING_INIT_MESSAGE
     protocol_->log_raw(LOGGING_BOLD_TEXT LOGGING_BLUE_TEXT
                        "*******************************************" LOGGING_RESET_COLOR);
@@ -46,12 +46,17 @@ void LoggingTask::run() {
                        "*******************************************" LOGGING_RESET_COLOR);
     protocol_->log_raw("");
 #endif
+    xSemaphoreGive(mutex_);
 
     while (1) {
         if (xQueueReceive(log_queue, &log_msg, 0)) {
+            xSemaphoreTake(mutex_, portMAX_DELAY);
             protocol_->log(log_msg);
+            xSemaphoreGive(mutex_);
         }
+        xSemaphoreTake(mutex_, portMAX_DELAY);
         protocol_->read();
+        xSemaphoreGive(mutex_);
         delay(25);
     }
 }
@@ -61,4 +66,10 @@ void LoggingTask::enqueue_log(const LogMessage &log_message) {
         // TODO handle overflow of queue, below line throws an exception but doesnt log anything useful to the end user.
         // throw std::runtime_error("Failed to send log message to queue");
     }
+}
+
+void LoggingTask::setProtocol(Protocol *protocol) {
+    xSemaphoreTake(mutex_, portMAX_DELAY);
+    protocol_ = protocol;
+    xSemaphoreGive(mutex_);
 }
