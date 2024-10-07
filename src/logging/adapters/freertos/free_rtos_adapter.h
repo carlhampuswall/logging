@@ -14,6 +14,7 @@ class FreeRTOSAdapter : public LogAdapter {
                     UBaseType_t priority, const BaseType_t coreId = 0);
 
     void setProtocol(Protocol *protocol);
+    Protocol *getProtocol();
 
     void output(const char *message) override;
     void handleLog(LogMessage log_message) override;

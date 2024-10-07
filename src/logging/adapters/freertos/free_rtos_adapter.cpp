@@ -37,6 +37,8 @@ void FreeRTOSAdapter::setProtocol(Protocol *protocol) {
     logging_task_.setProtocol(protocol);
 }
 
+Protocol *FreeRTOSAdapter::getProtocol() { return protocol_; }
+
 bool FreeRTOSAdapter::available() {
     TaskHandle_t taskHandle = logging_task_.getHandle();
     if (taskHandle == nullptr) {
