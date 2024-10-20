@@ -60,8 +60,8 @@ void SerialProtocolPlaintext::readSerial() {
                     delete handler;
                     vTaskDelete(NULL);
                 },
-                "key_handler_task", 1024 * 8, handler, 5, NULL); // TODO stack size and priority?
-        } else {                                                 //! Default key handlers can be overwritten
+                "key_handler_task", 1024 * 12, handler, 5, NULL); // TODO stack size and priority?
+        } else {                                                  //! Default key handlers can be overwritten
             if (b == 'V' || b == 'v') {
                 LOGI("Verbose logging toggle request received");
                 setVerbose(!verbose_);
