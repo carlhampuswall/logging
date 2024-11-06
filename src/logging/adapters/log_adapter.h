@@ -7,7 +7,7 @@ class LogAdapter {
     virtual ~LogAdapter() {};
 
     virtual void output(const char *message) = 0;
-    virtual void handleLog(LogMessage log_message) = 0;
+    virtual void handleLog(LogMessage *log_message) = 0;
 
     virtual void setVerbose(bool verbose);
     virtual void setOrigin(bool origin);

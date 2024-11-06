@@ -7,7 +7,7 @@ class Protocol {
   public:
     Protocol() {};
     ~Protocol() {};
-    virtual void log(const LogMessage &log_msg) = 0;
+    virtual void log(LogMessage *log_msg) = 0;
     virtual void log_raw(const char *msg) = 0;
     virtual void read() = 0;
 

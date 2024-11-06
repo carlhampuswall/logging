@@ -7,7 +7,7 @@
 class ArduinoSerialAdapter : public LogAdapter {
   public:
     void output(const char *message) override;
-    void handleLog(LogMessage log_message) override;
+    void handleLog(LogMessage *log_message) override;
 
     void setVerbose(bool verbose) override;
     void setOrigin(bool origin) override;

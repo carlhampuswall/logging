@@ -2,18 +2,18 @@
 
 void SerialProtocolPlaintext::registerKeyHandler(char key, KeyCallback callback) { keyHandlers_[key] = callback; }
 
-void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
-    if (!verbose_ && log_msg.verbose) {
+void SerialProtocolPlaintext::log(LogMessage *log_msg) {
+    if (!verbose_ && log_msg->verbose) {
         return;
     }
 
     std::string msg_ = "";
 
-    if (log_msg.verbose) {
+    if (log_msg->verbose) {
         msg_ += "[V]";
     }
 
-    switch (log_msg.level) {
+    switch (log_msg->level) {
     case LOG_LEVEL_INFO:
         msg_ += LOGGING_GRAY_TEXT "[INFO] " LOGGING_RESET_COLOR;
         break;
@@ -31,12 +31,13 @@ void SerialProtocolPlaintext::log(const LogMessage &log_msg) {
         break;
     }
 
-    msg_ += log_msg.msg;
+    msg_ += log_msg->msg;
 
     if (origin_) {
-        msg_ += LOGGING_CYAN_TEXT " [" + std::string(log_msg.origin) + "]" LOGGING_RESET_COLOR;
+        msg_ += LOGGING_CYAN_TEXT " [" + std::string(log_msg->origin) + "]" LOGGING_RESET_COLOR;
     }
     stream_.println(msg_.c_str());
+    free(log_msg);
 }
 
 void SerialProtocolPlaintext::log_raw(const char *msg) { stream_.println(msg); }
