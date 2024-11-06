@@ -37,7 +37,6 @@ void SerialProtocolPlaintext::log(LogMessage *log_msg) {
         msg_ += LOGGING_CYAN_TEXT " [" + std::string(log_msg->origin) + "]" LOGGING_RESET_COLOR;
     }
     stream_.println(msg_.c_str());
-    free(log_msg);
 }
 
 void SerialProtocolPlaintext::log_raw(const char *msg) { stream_.println(msg); }

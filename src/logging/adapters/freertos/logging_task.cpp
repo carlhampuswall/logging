@@ -54,6 +54,7 @@ void LoggingTask::run() {
             // xSemaphoreTake(mutex_, portMAX_DELAY);
             // TODO look into why this is causing a deadlock (why is mutex_ locked?)
             protocol_->log(log_msg);
+            free(log_msg);
             // xSemaphoreGive(mutex_);
         }
         // xSemaphoreTake(mutex_, portMAX_DELAY);
