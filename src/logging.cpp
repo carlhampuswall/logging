@@ -40,22 +40,32 @@ void Logging::log(LOG_LEVEL level, bool verbose, unsigned long timesstamp, char 
     Logging *log = getInstance();
     assert(log->adapter_);
 
-    LogMessage log_msg;
-    log_msg.level = level;
-    log_msg.verbose = verbose;
-    log_msg.timestamp = timesstamp;
+    // // LogMessage log_msg;
+    LogMessage *log_msg = (LogMessage *)malloc(sizeof(LogMessage));
+    log_msg->level = level;
+    log_msg->verbose = verbose;
+    log_msg->timestamp = timesstamp;
 
     if (level < 1 || level >= LOG_LEVEL_COUNT) {
-        log->adapter_->handleLog(LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid log level"});
+        // LogMessage *invalid_log_level = new LogMessage{LOG_LEVEL_ERROR, false, timesstamp, "logging.cpp", "Invalid
+        // log level"};
+        log_msg->level = LOG_LEVEL_ERROR;
+        log_msg->verbose = false;
+        log_msg->timestamp = timesstamp;
+        snprintf(log_msg->origin, ORIGIN_MAX_SIZE, "logging.cpp");
+        snprintf(log_msg->msg, MSG_MAX_SIZE, "Invalid log level");
+
+        log->adapter_->handleLog(log_msg);
+        return;
     }
 
-    snprintf(log_msg.origin, ORIGIN_MAX_SIZE, "%s:%d - %s", strrchr(file, '/') ? strrchr(file, '/') + 1 : file, line,
+    snprintf(log_msg->origin, ORIGIN_MAX_SIZE, "%s:%d - %s", strrchr(file, '/') ? strrchr(file, '/') + 1 : file, line,
              func);
-    log_msg.origin[ORIGIN_MAX_SIZE - 1] = '\0'; // Ensure null-termination
+    log_msg->origin[ORIGIN_MAX_SIZE - 1] = '\0'; // Ensure null-termination
 
     va_list args;
     va_start(args, fmt);
-    vsnprintf(log_msg.msg, MSG_MAX_SIZE, fmt, args);
+    vsnprintf(log_msg->msg, MSG_MAX_SIZE, fmt, args);
     va_end(args);
 
     log->adapter_->handleLog(log_msg);

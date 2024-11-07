@@ -49,10 +49,12 @@ void LoggingTask::run() {
     xSemaphoreGive(mutex_);
 
     while (1) {
+
         if (xQueueReceive(log_queue, &log_msg, 0)) {
             // xSemaphoreTake(mutex_, portMAX_DELAY);
             // TODO look into why this is causing a deadlock (why is mutex_ locked?)
             protocol_->log(log_msg);
+            free(log_msg);
             // xSemaphoreGive(mutex_);
         }
         // xSemaphoreTake(mutex_, portMAX_DELAY);
@@ -62,10 +64,11 @@ void LoggingTask::run() {
     }
 }
 
-void LoggingTask::enqueue_log(const LogMessage &log_message) {
+void LoggingTask::enqueue_log(LogMessage *log_message) {
     if (xQueueSend(log_queue, &log_message, pdMS_TO_TICKS(100)) != pdTRUE) {
         // TODO handle overflow of queue, below line throws an exception but doesnt log anything useful to the end user.
         // throw std::runtime_error("Failed to send log message to queue");
+        free(log_message);
     }
 }
 

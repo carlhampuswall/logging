@@ -12,7 +12,7 @@ void FreeRTOSAdapter::output(const char *message) {
     // Serial.println(message);
 }
 
-void FreeRTOSAdapter::handleLog(LogMessage log_msg) {
+void FreeRTOSAdapter::handleLog(LogMessage *log_msg) {
     xSemaphoreTake(mutex_, portMAX_DELAY);
     logging_task_.enqueue_log(log_msg);
     xSemaphoreGive(mutex_);

@@ -2,13 +2,13 @@
 
 void ArduinoSerialAdapter::output(const char *message) { Serial.println(message); }
 
-void ArduinoSerialAdapter::handleLog(LogMessage log_msg) {
-    if (!verbose_ && log_msg.verbose) {
+void ArduinoSerialAdapter::handleLog(LogMessage *log_msg) {
+    if (!verbose_ && log_msg->verbose) {
         return;
     } // TODO: Add something to signify verbose logging
 
     std::string msg = "";
-    switch (log_msg.level) {
+    switch (log_msg->level) {
     case LOG_LEVEL_INFO:
         msg += "\u001b[37m INFO:\033[0m ";
         break;
@@ -29,9 +29,10 @@ void ArduinoSerialAdapter::handleLog(LogMessage log_msg) {
         break;
     }
 
-    msg += log_msg.msg;
+    msg += log_msg->msg;
 
     output(msg.c_str());
+    free(log_msg);
 }
 
 void ArduinoSerialAdapter::setVerbose(bool verbose) { verbose_ = verbose; }
